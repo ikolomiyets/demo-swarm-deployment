@@ -5,8 +5,8 @@ def result
 podTemplate(label: 'demo-test-deployment-pod', cloud: 'kubernetes', serviceAccount: 'jenkins',
   containers: [
     containerTemplate(name: 'docker', image: 'docker:dind', ttyEnabled: true, command: 'cat', privileged: true,
-        envVar(key: 'DOCKER_HOST', value: 'tcp://sonarqube.iktech.io:2376'),
-        envVar(key: 'DOCKER_TLS_VERIFY', value: '1'),
+        envVars: [envVar(key: 'DOCKER_HOST', value: 'tcp://sonarqube.iktech.io:2376'),
+        envVar(key: 'DOCKER_TLS_VERIFY', value: '1')
     ])
   ],
   volumes: [
