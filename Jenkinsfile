@@ -43,15 +43,15 @@ podTemplate(label: 'demo-test-deployment-pod', cloud: 'kubernetes', serviceAccou
                 demo_policy_version = result['demo_policy']
                 demo_frontend_version = result['demo_frontend']
 
-                if (demo_customer_version.isEmpty()) {
+                if (demo_customer_version == null || demo_customer_version.isEmpty()) {
                     demo_customer_version = 'latest';
                 }
 
-                if (demo_policy_version.isEmpty()) {
+                if (demo_policy_version == null || demo_policy_version.isEmpty()) {
                     demo_policy_version = 'latest';
                 }
 
-                if (demo_frontend_version.isEmpty()) {
+                if (demo_frontend_version == null || demo_frontend_version.isEmpty()) {
                     demo_frontend_version = 'latest';
                 }
 
