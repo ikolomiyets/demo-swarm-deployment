@@ -5,26 +5,17 @@ def result
 podTemplate(label: 'demo-test-deployment-pod', cloud: 'kubernetes', serviceAccount: 'jenkins',
   containers: [
     containerTemplate(name: 'docker', image: 'docker:dind', ttyEnabled: true, command: 'cat', privileged: true,
-        envVars: [secretEnvVar(key: 'DOCKER_USERNAME', secretName: 'ikolomiyets-docker-hub-credentials', secretKey: 'username'),
         envVar(key: 'DOCKER_HOST', value: 'tcp://sonarqube.iktech.io:2376'),
         envVar(key: 'DOCKER_TLS_VERIFY', value: '1'),
     ])
   ],
   volumes: [
-    secretVolume(mountPath: '/etc/.ssh', secretName: 'ssh-home'),
     secretVolume(mountPath: '/etc/docker/certificates', secretName: 'sonarqube-docker-certificates'),
-    secretVolume(secretName: 'ikolomiyets-docker-hub-credentials', mountPath: '/etc/.secret'),
     hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock')
   ]) {
     node('demo-test-deployment-pod') {
         stage('Prepare') {
             checkout scm
-
-            // Set up private key to access BitBucket
-            sh """
-                cat /etc/.ssh/id_rsa > ~/.ssh/id_rsa
-                chmod 400 ~/.ssh/id_rsa
-            """
         }
 
         stage('Retrieve docker images versions') {
