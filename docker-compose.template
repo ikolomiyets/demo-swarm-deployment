@@ -2,16 +2,10 @@ version: "3.7"
 services:
   demo-policy:
     image: ikolomiyets/demo-policy:__DEMO_POLICY_TAG__
-    ports:
-      - "8080:8080"
   demo-customer:
     image: ikolomiyets/demo-customers:__DEMO_CUSTOMERS_TAG__
-    ports:
-      - 3000:3000
   demo-frontend:
     image: ikolomiyets/demo-frontend:__DEMO_FRONTEND_TAG__
-    ports:
-      - "80:80"
     configs:
     - source: nginx
       target: /etc/nginx/conf.d/default.conf

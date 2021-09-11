@@ -1,0 +1,7 @@
+version: "3.7"
+services:
+  demo-policy: {}
+  demo-customer: {}
+  demo-frontend:
+    ports:
+      - "81:80"
