@@ -24,12 +24,6 @@ podTemplate(label: 'demo-test-deployment-pod', cloud: 'kubernetes', serviceAccou
             sh """
                 cat /etc/.ssh/id_rsa > ~/.ssh/id_rsa
                 chmod 400 ~/.ssh/id_rsa
-                mkdir -p ~/.docker
-                ls -l /etc/docker/certificates/
-                cp /etc/docker/certificates/ca.pem ~/.docker/ca.pem
-                cp /etc/docker/certificates/cert.pem ~/.docker/cert.pem
-                cp /etc/docker/certificates/key.pem ~/.docker/key.pem
-                chmod 600 ~/.docker/key.pem
             """
         }
 
@@ -56,6 +50,14 @@ podTemplate(label: 'demo-test-deployment-pod', cloud: 'kubernetes', serviceAccou
                 }
 
                 sh """
+                    echo "Preparing docker environment for the swarm deployment"
+                    mkdir -p /root/.docker
+                    ls -l /etc/docker/certificates/
+                    cp /etc/docker/certificates/ca.pem /root/.docker/ca.pem
+                    cp /etc/docker/certificates/cert.pem /root/.docker/cert.pem
+                    cp /etc/docker/certificates/key.pem /root/.docker/key.pem
+                    chmod 600 /root/.docker/key.pem
+
                     echo "Preparing docker-compose file"
                     echo "Deploying stack to a docker instance at ${env.DOCKER_HOST}"
                     cat docker-compose.template| sed s/__DEMO_POLICY_TAG__/${demo_policy_version}/g|sed s/__DEMO_CUSTOMERS_TAG__/${demo_customer_version}/g|sed s/__DEMO_FRONTEND_TAG__/${demo_frontend_version}/g|docker stack deploy --compose-file docker-compose.prod.yaml --compose-file - demo-prod
