@@ -29,23 +29,17 @@ podTemplate(label: 'demo-test-deployment-pod', cloud: 'kubernetes', serviceAccou
 
         stage('Retrieve docker images versions') {
 			result = retrieveArtifacts stage: 'Production', names: ['demo-customer', 'demo-policy', 'demo-frontend']
-			sh """
-			    echo ${result}
-			"""
         }
 
         stage('Deploy Latest') {
             container('docker') {
                 def demo_customer_version = result['demo-customer']
-                sh "echo ${demo_customer_version}"
                 def demo_policy_version = result['demo-policy']
                 def demo_frontend_version = result['demo-frontend']
 
                 if (demo_customer_version == null || demo_customer_version.isEmpty()) {
                     demo_customer_version = 'latest';
                 }
-
-                sh "echo ${demo_customer_version}"
 
                 if (demo_policy_version == null || demo_policy_version.isEmpty()) {
                     demo_policy_version = 'latest';
