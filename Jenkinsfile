@@ -29,6 +29,9 @@ podTemplate(label: 'demo-test-deployment-pod', cloud: 'kubernetes', serviceAccou
 
         stage('Retrieve docker images versions') {
 			result = retrieveArtifacts stage: 'Production', names: ['demo-customer', 'demo-policy', 'demo-frontend']
+			sh """
+			    echo ${result}
+			"""
         }
 
         stage('Deploy Latest') {
