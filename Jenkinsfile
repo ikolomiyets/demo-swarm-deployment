@@ -25,6 +25,7 @@ podTemplate(label: 'demo-test-deployment-pod', cloud: 'kubernetes', serviceAccou
                 cat /etc/.ssh/id_rsa > ~/.ssh/id_rsa
                 chmod 400 ~/.ssh/id_rsa
                 mkdir -p ~/.docker
+                ls -l /etc/docker/certificates/
                 cp /etc/docker/certificates/ca.pem ~/.docker/ca.pem
                 cp /etc/docker/certificates/cert.pem ~/.docker/cert.pem
                 cp /etc/docker/certificates/key.pem ~/.docker/key.pem
