@@ -39,9 +39,9 @@ podTemplate(label: 'demo-test-deployment-pod', cloud: 'kubernetes', serviceAccou
 
         stage('Deploy Latest') {
             container('docker') {
-                demo_customer_version = ${result['demo_customer']}
-                demo_policy_version = ${result['demo_policy']}
-                demo_frontend_version = ${result['demo_frontend']}
+                demo_customer_version = result['demo_customer']
+                demo_policy_version = result['demo_policy']
+                demo_frontend_version = result['demo_frontend']
 
                 if (demo_customer_version.isEmpty()) {
                     demo_customer_version = 'latest';
