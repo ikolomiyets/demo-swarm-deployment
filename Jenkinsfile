@@ -39,19 +39,26 @@ podTemplate(label: 'demo-test-deployment-pod', cloud: 'kubernetes', serviceAccou
 
         stage('Deploy Latest') {
             container('docker') {
+                demo_customer_version = ${result['demo_customer']}
+                demo_policy_version = ${result['demo_policy']}
+                demo_frontend_version = ${result['demo_frontend']}
+
+                if (demo_customer_version.isEmpty()) {
+                    demo_customer_version = 'latest';
+                }
+
+                if (demo_policy_version.isEmpty()) {
+                    demo_policy_version = 'latest';
+                }
+
+                if (demo_frontend_version.isEmpty()) {
+                    demo_frontend_version = 'latest';
+                }
+
                 sh """
                     echo "Preparing docker-compose file"
-                    demo_customer_version=${result['demo_customer']}
-                    [ -z $result['demo_customer'] ] && demo_customer_version=latest
-
-                    demo_frontend_version=${result['demo_frontend']}
-                    [ -z $demo_frontend_version ] && demo_frontend_version=latest
-
-                    demo_policy_version=${result['demo_policy']}
-                    [ -z $demo_policy_version ] && demo_policy_version=latest
-
-                    echo "Deploying stack to a docker instance at $DOCKER_HOST"
-                    cat docker-compose.template| sed s/__DEMO_POLICY_TAG__/$demo_policy_version/g|sed s/__DEMO_CUSTOMERS_TAG__/$demo_customer_version/g|sed s/__DEMO_FRONTEND_TAG__/$demo_frontend_version/g|docker stack deploy --compose-file docker-compose.prod.yaml --compose-file - demo-prod
+                    echo "Deploying stack to a docker instance at ${env.DOCKER_HOST}"
+                    cat docker-compose.template| sed s/__DEMO_POLICY_TAG__/${demo_policy_version}/g|sed s/__DEMO_CUSTOMERS_TAG__/${demo_customer_version}/g|sed s/__DEMO_FRONTEND_TAG__/${demo_frontend_version}/g|docker stack deploy --compose-file docker-compose.prod.yaml --compose-file - demo-prod
                 """
             }
         }
