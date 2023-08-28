@@ -8,7 +8,14 @@ trigger:
 - master
 
 resources:
-- repo: self
+  repositories:
+    - repository: self
+  pipelines:
+    - pipeline: policy-ci
+      source: ikolomiyets.demo-integration-tests
+      trigger:
+        branches:
+          - master
 
 variables:
   - group: demo
