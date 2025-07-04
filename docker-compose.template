@@ -1,7 +1,7 @@
 version: "3.7"
 services:
   demo-policy:
-    image: ikolomiyets/demo-policy:1.0.0.1
+    image: ikolomiyets/demo-policy:1.0.0.2
   demo-customer:
     image: ikolomiyets/demo-customers:__DEMO_CUSTOMERS_TAG__
   demo-frontend:
